@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Search, Menu, X } from "lucide-react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Search, Menu, X, TicketPlus } from "lucide-react";
+
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  useUser,
+} from "@clerk/clerk-react";
 
 const links = [
   {
@@ -26,9 +34,12 @@ const links = [
 ];
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useUser();
+  const navigate = useNavigate();
+
   return (
-    <div className="flex items-center justify-between bg-white px-6 py-4 md:px-16 lg:px-36 lg:text-sm xl:text-base">
-      <Link to="/">
+    <div className="fixed z-50 flex w-full items-center justify-between border-b border-neutral-200 bg-white px-6 py-5 md:px-16 lg:px-36 lg:text-sm xl:text-base">
+      <Link to="/" onClick={() => scrollTo(0, 0)}>
         <img
           src="../media/navLogo.svg"
           alt="Logo"
@@ -47,6 +58,7 @@ const Navbar = () => {
               }
               return `rounded-full px-3 py-1.5 text-neutral-700 transition-colors duration-300 hover:bg-neutral-200 hover:text-black`;
             }}
+            onClick={() => scrollTo(0, 0)}
           >
             {link.name}
           </NavLink>
@@ -58,12 +70,31 @@ const Navbar = () => {
           size={20}
           className="hidden cursor-pointer hover:scale-110 lg:block"
         />
-        <button className="group relative hidden overflow-hidden rounded-full border px-4 py-1.5 lg:block">
-          <span className="absolute inset-0 -translate-x-full bg-neutral-900 transition-transform duration-300 ease-linear group-hover:translate-x-0" />
-          <span className="relative z-10 text-black transition-colors duration-300 group-hover:text-white">
-            Login
-          </span>
-        </button>
+
+        {user ? (
+          <SignedIn>
+            <UserButton>
+              <UserButton.MenuItems>
+                <UserButton.Action
+                  label="My Bookings"
+                  labelIcon={<TicketPlus size={16} />}
+                  onClick={() => navigate("/myBookings")}
+                />
+              </UserButton.MenuItems>
+            </UserButton>
+          </SignedIn>
+        ) : (
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="group relative hidden overflow-hidden rounded-full border px-4 py-1.5 lg:block">
+                <span className="absolute inset-0 -translate-x-full bg-neutral-900 transition-transform duration-300 ease-linear group-hover:translate-x-0" />
+                <span className="relative z-10 text-black transition-colors duration-300 group-hover:text-white">
+                  Login
+                </span>
+              </button>
+            </SignInButton>
+          </SignedOut>
+        )}
         <Menu
           size={20}
           className="text-text-secondary lg:hidden"
@@ -98,14 +129,16 @@ const Navbar = () => {
                 {link.name}
               </NavLink>
             ))}
-            <button
-              className="group relative mx-auto overflow-hidden rounded-full border px-10 py-1.5 md:px-24"
-              onClick={() => {
-                (scrollTo(0, 0), setIsOpen(!isOpen));
-              }}
-            >
-              Login
-            </button>
+            {user ? null : (
+              <button
+                className="group relative mx-auto overflow-hidden rounded-full border px-10 py-1.5 md:px-24"
+                onClick={() => {
+                  (scrollTo(0, 0), setIsOpen(!isOpen));
+                }}
+              >
+                Login
+              </button>
+            )}
           </div>
         </div>
       )}

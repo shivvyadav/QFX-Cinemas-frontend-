@@ -52,7 +52,7 @@ const Routes = () => {
           ],
         },
         {
-          path: "/mybookings",
+          path: "/myBookings",
           element: <MyBookings />,
         },
         {
