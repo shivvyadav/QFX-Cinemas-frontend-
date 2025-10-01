@@ -21,11 +21,11 @@ const links = [
   },
   {
     name: "Theatre",
-    path: "/",
+    path: "/theatre",
   },
   {
     name: "Releases",
-    path: "/",
+    path: "/releases",
   },
   {
     name: "Favourite",
@@ -38,7 +38,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed z-50 flex w-full items-center justify-between border-b border-neutral-200 bg-white px-6 py-5 md:px-16 lg:px-36 lg:text-sm xl:text-base">
+    <div className="fixed z-50 flex w-full items-center justify-between border-b border-neutral-200 bg-white px-6 py-5 md:px-16 lg:px-24 xl:px-36 lg:text-sm xl:text-base">
       <Link to="/" onClick={() => scrollTo(0, 0)}>
         <img
           src="../media/navLogo.svg"
