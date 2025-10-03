@@ -1,20 +1,22 @@
 import React from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Outlet,
-  useLocation,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/home/Home";
 import Movies from "./components/movies/Movies";
 import MovieDetails from "./components/movieDetails/MovieDetails";
-import SeatLayour from "./components/seatLayout/SeatLayout";
+import SeatLayout from "./components/seatLayout/SeatLayout";
 import MyBookings from "./components/myBookings/MyBookings";
 import Favoutite from "./components/favourite/Favourite";
+
+import TicketRate from "./components/more/TicketRate";
+import Gallery from "./components/more/Gallery";
+
 import Error from "./components/Error";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import Contact from "./components/Contact";
+import TermsAndCondition from "./components/TermsAndCondition";
 
 const Layout = () => {
   return (
@@ -47,7 +49,7 @@ const Routes = () => {
             },
             {
               path: ":id/seat",
-              element: <SeatLayour />,
+              element: <SeatLayout />,
             },
           ],
         },
@@ -58,6 +60,26 @@ const Routes = () => {
         {
           path: "/favourite",
           element: <Favoutite />,
+        },
+        {
+          path: "/ticketRate",
+          element: <TicketRate />,
+        },
+        {
+          path: "/gallery",
+          element: <Gallery />,
+        },
+        {
+          path: "/contact",
+          element: <Contact />,
+        },
+        {
+          path: "/privacyPolicy",
+          element: <PrivacyPolicy />,
+        },
+        {
+          path: "/termsAndCondition",
+          element: <TermsAndCondition />,
         },
         {
           path: "*",
