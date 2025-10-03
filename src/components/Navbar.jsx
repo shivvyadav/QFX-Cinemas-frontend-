@@ -24,21 +24,22 @@ const links = [
     path: "/theatre",
   },
   {
-    name: "Releases",
-    path: "/releases",
-  },
-  {
     name: "Favourite",
     path: "/favourite",
+  },
+  {
+    name: "More",
+    path: "/releases",
   },
 ];
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [dropDown, setDropDown] = useState(false);
   const { user } = useUser();
   const navigate = useNavigate();
 
   return (
-    <div className="fixed z-50 flex w-full items-center justify-between border-b border-neutral-200 bg-white px-6 py-5 md:px-16 lg:px-24 xl:px-36 lg:text-sm xl:text-base">
+    <div className="fixed z-50 flex w-full items-center justify-between border-b border-neutral-200 bg-white px-6 py-5 md:px-16 lg:px-24 lg:text-sm xl:px-36 xl:text-base">
       <Link to="/" onClick={() => scrollTo(0, 0)}>
         <img
           src="../media/navLogo.svg"
@@ -48,21 +49,53 @@ const Navbar = () => {
       </Link>
 
       <div className="hidden font-medium text-neutral-700 lg:flex lg:justify-center lg:gap-6 xl:gap-10">
-        {links.map((link) => (
-          <NavLink
-            key={link.name}
-            to={link.path}
-            className={({ isActive }) => {
-              if (isActive) {
-                return `rounded-full bg-blue-100 px-3 py-1.5 text-blue-800`;
-              }
-              return `rounded-full px-3 py-1.5 text-neutral-700 transition-colors duration-300 hover:bg-neutral-200 hover:text-black`;
-            }}
-            onClick={() => scrollTo(0, 0)}
-          >
-            {link.name}
-          </NavLink>
-        ))}
+        {links.map((link) =>
+          link.name == "More" ? (
+            <div
+              className="relative h-full cursor-pointer px-3 py-1.5 text-neutral-700 hover:text-black"
+              onMouseEnter={() => setDropDown(true)}
+              onMouseLeave={() => setDropDown(false)}
+            >
+              More
+              {dropDown && (
+                <div className="absolute h-28 w-48 -translate-x-8 translate-y-[6px] overflow-hidden rounded-sm bg-white py-4 text-neutral-600 shadow-[0_2.8px_2.2px_rgba(0,_0,_0,_0.034),_0_6.7px_5.3px_rgba(0,_0,_0,_0.048),_0_12.5px_10px_rgba(0,_0,_0,_0.06),_0_22.3px_17.9px_rgba(0,_0,_0,_0.072),_0_41.8px_33.4px_rgba(0,_0,_0,_0.086),_0_100px_80px_rgba(0,_0,_0,_0.12)]">
+                  <NavLink
+                    to="/ticketRate"
+                    onClick={() => {
+                      (scrollTo(0, 0), setDropDown(false));
+                    }}
+                    className="block py-2 transition-colors duration-300 hover:bg-neutral-200 hover:text-black"
+                  >
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ticket Rate
+                  </NavLink>
+                  <NavLink
+                    to="/gallery"
+                    onClick={() => {
+                      (scrollTo(0, 0), setDropDown(false));
+                    }}
+                    className="block py-2 transition-colors duration-300 hover:bg-neutral-200 hover:text-black"
+                  >
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gallery
+                  </NavLink>
+                </div>
+              )}
+            </div>
+          ) : (
+            <NavLink
+              key={link.name}
+              to={link.path}
+              className={({ isActive }) => {
+                if (isActive) {
+                  return `rounded-full bg-blue-100 px-3 py-1.5 text-blue-800`;
+                }
+                return `rounded-full px-3 py-1.5 text-neutral-700 transition-colors duration-300 hover:bg-neutral-200 hover:text-black`;
+              }}
+              onClick={() => scrollTo(0, 0)}
+            >
+              {link.name}
+            </NavLink>
+          ),
+        )}
       </div>
 
       <div className="flex items-center gap-8 font-medium">
