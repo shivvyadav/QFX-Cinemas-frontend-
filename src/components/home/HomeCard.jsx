@@ -6,7 +6,7 @@ const HomeCard = () => {
       <h2 className="p-6 text-base font-semibold text-neutral-800">
         In the Spotlight
       </h2>
-      <div className="mx-4 overflow-hidden rounded-2xl border">
+      <div className="mx-4 overflow-hidden rounded-2xl border border-neutral-300">
         <div className="h-[200px] overflow-hidden">
           <img src="../media/demonSlayer.jpg" alt="Demon Slayer" className="" />
         </div>

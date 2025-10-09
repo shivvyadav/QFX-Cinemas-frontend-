@@ -24,8 +24,8 @@ const links = [
     path: "/theatre",
   },
   {
-    name: "Favourite",
-    path: "/favourite",
+    name: "Activities",
+    path: "/activities",
   },
   {
     name: "More",
@@ -39,7 +39,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed z-50 flex w-full items-center justify-between border-b border-neutral-200 bg-white px-6 py-5 md:px-16 lg:px-24 lg:text-sm xl:px-36 xl:text-base">
+    <div className="fixed z-40 flex w-full items-center justify-between border-b border-neutral-200 bg-white px-6 py-5 md:px-16 lg:px-24 lg:text-sm xl:px-36 xl:text-base">
       <Link to="/" onClick={() => scrollTo(0, 0)}>
         <img
           src="../media/navLogo.svg"
@@ -52,6 +52,7 @@ const Navbar = () => {
         {links.map((link) =>
           link.name == "More" ? (
             <div
+              key={link.name}
               className="relative h-full cursor-pointer px-3 py-1.5 text-neutral-700 hover:text-black"
               onMouseEnter={() => setDropDown(true)}
               onMouseLeave={() => setDropDown(false)}

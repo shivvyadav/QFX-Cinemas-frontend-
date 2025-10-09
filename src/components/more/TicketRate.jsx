@@ -63,7 +63,7 @@ const TicketRate = () => {
         Ticket Prices
       </h1>
       <div className="overflow-x-auto px-6 pt-16 md:px-16 lg:px-24 xl:px-36">
-        <table className="w-full border-collapse overflow-hidden rounded-lg text-sm shadow-md md:text-base">
+        <table className="w-full border-collapse overflow-hidden rounded-lg text-sm shadow md:text-base">
           {/* Table Head */}
           <thead>
             <tr className="relative bg-red-600 text-white">

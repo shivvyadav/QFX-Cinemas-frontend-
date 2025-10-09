@@ -7,7 +7,7 @@ const Gallery = () => {
         Gallery
       </h1>
       <div className="flex flex-col gap-6 px-6 py-8 md:flex-row md:flex-wrap md:px-16 md:py-16 lg:px-24 xl:px-36">
-        <div className="overflow-hidden rounded-md">
+        <div className="overflow-hidden rounded-md shadow">
           <img
             src="../media/premium.jpg"
             alt=""
@@ -17,7 +17,7 @@ const Gallery = () => {
             premium
           </p>
         </div>
-        <div className="overflow-hidden rounded-md">
+        <div className="overflow-hidden rounded-md shadow">
           <img
             src="../media/Itahari.jpg"
             alt=""
@@ -27,7 +27,7 @@ const Gallery = () => {
             QFX Cinema(Itahari)
           </p>
         </div>
-        <div className="overflow-hidden rounded-md">
+        <div className="overflow-hidden rounded-md shadow">
           <img
             src="../media/biratnagar.jpeg"
             alt=""

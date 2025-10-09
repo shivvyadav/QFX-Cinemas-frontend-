@@ -5,18 +5,26 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/home/Home";
 import Movies from "./components/movies/Movies";
-import MovieDetails from "./components/movieDetails/MovieDetails";
+import Theatre from "./components/theatre/Theatre";
+import ViewMovie from "./components/movieComponents/ViewMovie";
+import BuyMovie from "./components/movieComponents/BuyMovie";
 import SeatLayout from "./components/seatLayout/SeatLayout";
 import MyBookings from "./components/myBookings/MyBookings";
-import Favoutite from "./components/favourite/Favourite";
-
+import Activities from "./components/Activities/Activities";
 import TicketRate from "./components/more/TicketRate";
 import Gallery from "./components/more/Gallery";
-
 import Error from "./components/Error";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Contact from "./components/Contact";
 import TermsAndCondition from "./components/TermsAndCondition";
+
+// admin imports
+import Nav from "./admin/Nav";
+import Sidebar from "./admin/Sidebar";
+import Dashboard from "./admin/Dashboard";
+import AddShow from "./admin/AddShow";
+import ListShows from "./admin/ListShows";
+import ListBookings from "./admin/ListBookings";
 
 const Layout = () => {
   return (
@@ -24,6 +32,15 @@ const Layout = () => {
       <Navbar />
       <Outlet /> {/* This is where routed pages will render */}
       <Footer />
+    </>
+  );
+};
+const AdminLayout = () => {
+  return (
+    <>
+      <Nav />
+      <Sidebar />
+      <Outlet /> {/* This is where routed pages will render */}
     </>
   );
 };
@@ -45,21 +62,25 @@ const Routes = () => {
             },
             {
               path: ":id",
-              element: <MovieDetails />,
+              element: <ViewMovie />,
             },
             {
-              path: ":id/seat",
-              element: <SeatLayout />,
+              path: "buy/:id",
+              element: <BuyMovie />,
             },
           ],
+        },
+        {
+          path: "/theatre",
+          element: <Theatre />,
         },
         {
           path: "/myBookings",
           element: <MyBookings />,
         },
         {
-          path: "/favourite",
-          element: <Favoutite />,
+          path: "/activities",
+          element: <Activities />,
         },
         {
           path: "/ticketRate",
@@ -81,9 +102,34 @@ const Routes = () => {
           path: "/termsAndCondition",
           element: <TermsAndCondition />,
         },
+      ],
+    },
+    {
+      path: "/movies/seatLayout/:id",
+      element: <SeatLayout />,
+    },
+    {
+      path: "*",
+      element: <Error />,
+    },
+    {
+      element: <AdminLayout />,
+      children: [
         {
-          path: "*",
-          element: <Error />,
+          path: "/admin",
+          element: <Dashboard />,
+        },
+        {
+          path: "/admin/addShows",
+          element: <AddShow />,
+        },
+        {
+          path: "/admin/listShows",
+          element: <ListShows />,
+        },
+        {
+          path: "/admin/listBookings",
+          element: <ListBookings />,
         },
       ],
     },

@@ -1,5 +1,6 @@
 import React from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { toast } from "react-hot-toast";
 
 const CarouselContent = ({ movies, uid, left, right }) => {
   return (
@@ -22,7 +23,10 @@ const CarouselContent = ({ movies, uid, left, right }) => {
         <h3 className="text-lg font-semibold text-neutral-800 md:text-[15px] lg:text-base">
           {movies.description}
         </h3>
-        <button className="group relative hidden overflow-hidden rounded-xl border-[2px] border-neutral-900 px-6 py-3 md:block md:px-4 md:py-2 lg:px-5 lg:py-2.5">
+        <button
+          onClick={() => toast.success("Successfully created!")}
+          className="group relative hidden overflow-hidden rounded-xl border-[2px] border-neutral-900 px-6 py-3 md:block md:px-4 md:py-2 lg:px-5 lg:py-2.5"
+        >
           <span className="absolute inset-0 -translate-x-full bg-neutral-900 transition-transform duration-300 ease-linear group-hover:translate-x-0" />
           <span className="relative z-10 text-base font-semibold text-black transition-colors duration-300 group-hover:text-white">
             Book Now
