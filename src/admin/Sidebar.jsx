@@ -4,7 +4,7 @@ import { LayoutDashboard, SquarePlus, List, TicketCheck } from "lucide-react";
 const items = [
   {
     name: "Dashboard",
-    path: "/admin",
+    path: "/admin/dashboard",
     icon: LayoutDashboard,
   },
   {
@@ -28,7 +28,7 @@ const Sidebar = () => {
     <div className="fixed z-30 min-h-screen border-r border-neutral-300 bg-neutral-50 pt-24 xl:w-[15rem]">
       <div className="flex flex-col gap-2 pl-2 md:pl-12 lg:pl-16">
         <img
-          src="../media/shivdon.jpg"
+          src="../../admin.jpeg"
           alt="admin"
           className="size-10 rounded-full border border-neutral-300 object-cover xl:size-16"
         />
@@ -39,7 +39,7 @@ const Sidebar = () => {
           <div key={item.name}>
             <NavLink
               to={item.path}
-              end={item.path === "/admin"}
+              end={item.path === "/admin/dashboard"}
               onClick={() => scrollTo(0, 0)}
               className={({ isActive }) => {
                 if (isActive) {
