@@ -1,5 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { AppProvider } from "./context/AppContext.jsx";
+import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -29,9 +31,11 @@ import ListBookings from "./admin/ListBookings";
 const Layout = () => {
   return (
     <>
-      <Navbar />
-      <Outlet /> {/* This is where routed pages will render */}
-      <Footer />
+      <AppProvider>
+        <Navbar />
+        <Outlet />
+        <Footer />
+      </AppProvider>
     </>
   );
 };
@@ -40,7 +44,7 @@ const AdminLayout = () => {
     <>
       <Nav />
       <Sidebar />
-      <Outlet /> {/* This is where routed pages will render */}
+      <Outlet />
     </>
   );
 };
@@ -61,18 +65,23 @@ const Routes = () => {
               element: <Movies />,
             },
             {
-              path: ":id",
+              path: "details/:id",
               element: <ViewMovie />,
+            },
+          ],
+        },
+        {
+          path: "/theatre",
+          children: [
+            {
+              path: "",
+              element: <Theatre />,
             },
             {
               path: "buy/:id",
               element: <BuyMovie />,
             },
           ],
-        },
-        {
-          path: "/theatre",
-          element: <Theatre />,
         },
         {
           path: "/myBookings",
@@ -105,7 +114,7 @@ const Routes = () => {
       ],
     },
     {
-      path: "/movies/seatLayout/:id",
+      path: "/seatLayout/:movie_id/:date/:time",
       element: <SeatLayout />,
     },
     {
@@ -113,10 +122,14 @@ const Routes = () => {
       element: <Error />,
     },
     {
-      element: <AdminLayout />,
+      element: (
+        <ProtectedAdminRoute>
+          <AdminLayout />
+        </ProtectedAdminRoute>
+      ),
       children: [
         {
-          path: "/admin",
+          path: "/admin/dashboard",
           element: <Dashboard />,
         },
         {
