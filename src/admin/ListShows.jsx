@@ -3,7 +3,7 @@ import Title from "./Title";
 
 const ListShows = () => {
   return (
-    <div className="gradient min-h-screen py-24 pl-20 md:pr-3 md:pl-48 lg:pl-56 xl:pl-70">
+    <div className=" min-h-screen py-24 pl-20 md:pr-3 md:pl-48 lg:pl-56 xl:pl-70">
       <Title text1="List" text2="Shows" />
 
       {/* table */}

@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { TicketCheck, Users, Clapperboard, Coins } from "lucide-react";
+import { IconTrashFilled } from "@tabler/icons-react";
 import Title from "./Title";
+import { YearExtract } from "../lib/utils";
+import Loader from "../components/loader/Loader";
+import { toast } from "react-hot-toast";
 
 const items = [
   {
@@ -22,12 +27,51 @@ const items = [
 ];
 
 const Dashboard = () => {
+  const [activeNow, setActiveNow] = useState([]);
+  const [deleteShowId, setDeleteShowId] = useState(null);
+
+  const handleDelete = async (showId) => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/shows/deleteShow/${showId}`,
+      );
+      fetchActiveNow();
+      setDeleteShowId(null);
+      toast.success("Show deleted successfully");
+    } catch (error) {
+      console.error("Error deleting show:", error);
+    }
+  };
+
+  const fetchActiveNow = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/shows/activeShows",
+      );
+      setActiveNow(response.data);
+    } catch (error) {
+      console.error("Error fetching active shows:", error);
+    }
+  };
+  useEffect(() => {
+    fetchActiveNow();
+  }, []);
+
   return (
-    <div className="gradient min-h-screen py-24 pl-20 md:pl-48 lg:pl-56 xl:pl-70">
+    <div className="relative min-h-screen py-24 pl-20 md:pl-48 lg:pl-56 xl:pl-70">
+      {!activeNow.length && (
+        <Loader
+          z={10}
+          translate={"translate-x-12 md:translate-x-22 translate-y-2 "}
+        />
+      )}
       <Title text1="Admin" text2="Dashboard" />
       <div className="my-6 flex flex-wrap gap-4 xl:gap-6">
         {items.map((item) => (
-          <div className="flex h-16 w-36 items-center justify-around rounded-lg border border-neutral-300 bg-neutral-50 shadow md:h-18 md:w-40 xl:h-20 xl:w-48">
+          <div
+            key={item.name}
+            className="flex h-16 w-36 items-center justify-around rounded-lg border border-neutral-300 bg-neutral-50 shadow md:h-18 md:w-40 xl:h-20 xl:w-48"
+          >
             <div>
               <h2 className="text-sm font-medium text-neutral-800 xl:text-base">
                 {item.name}
@@ -45,18 +89,54 @@ const Dashboard = () => {
       <h2 className="py-5 text-sm font-semibold text-neutral-700 md:text-lg lg:pt-8">
         Active Shows
       </h2>
-      <div className="flex flex-wrap gap-3 pr-3 md:gap-6">
-        <div className="group relative w-52 overflow-hidden rounded-xl border border-neutral-300 shadow">
-          <img src="../media/demonSlayer.jpg" alt="" className="h-56 w-full" />
-          <div className="p-2">
-            <h3 className="text-sm leading-4 font-semibold md:text-base md:leading-5">
-              Demon Slayer: Kimetsu no Yaiba
-            </h3>
-            <p className="pt-1 text-xs font-medium text-neutral-700 md:text-[14px]">
-              Hindi | <span>2025</span>
-            </p>
+      <div className="relative flex flex-wrap gap-4 py-2">
+        {activeNow.map((show) => (
+          <div
+            key={show._id}
+            className="group relative w-52 overflow-hidden rounded-xl border border-neutral-300 shadow"
+          >
+            <img src={show.poster} alt="" className="h-56 w-full" />
+            <div className="p-3">
+              <h3 className="text-sm leading-4 font-semibold md:text-base md:leading-5">
+                {show.title}
+              </h3>
+              <p className="pt-2 text-xs font-medium text-neutral-700 md:text-[14px]">
+                {show.language} | <span>{YearExtract(show.release_date)}</span>
+              </p>
+
+              {/* delete icon */}
+              <IconTrashFilled
+                onClick={() =>
+                  setDeleteShowId((prev) =>
+                    prev === show._id ? null : show._id,
+                  )
+                }
+                className="absolute right-4 bottom-4 size-6 text-red-500 hover:text-red-600"
+              />
+
+              {/* conditional confirm box */}
+              {deleteShowId === show._id && (
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-black/60 text-white">
+                  <p>Confirm to delete?</p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleDelete(show._id)}
+                      className="mr-2 rounded bg-red-500 px-3 py-1 text-sm font-medium text-white hover:bg-red-600"
+                    >
+                      Yes
+                    </button>
+                    <button
+                      onClick={() => setDeleteShowId(null)}
+                      className="rounded bg-neutral-200 px-4 py-1 text-sm font-medium text-neutral-800 hover:bg-neutral-300"
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

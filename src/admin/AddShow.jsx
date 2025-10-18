@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { CurrentMovies } from "../assets/ApiData";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Title from "./Title";
 import Loader from "../components/loader/Loader";
 import { toast } from "react-hot-toast";
@@ -9,10 +9,33 @@ import {
 } from "@tabler/icons-react";
 
 const AddShow = () => {
+  const [CurrentMovies, setCurrentMovies] = useState([]);
   const [selectedMovies, setSelectedMovies] = useState(null);
   const [dateAndTime, setDateAndTime] = useState("");
   const [totalDateAndTime, setTotalDateAndTime] = useState({});
   let toastId = null;
+
+  async function fetchMovies() {
+    const Current = [];
+    await axios
+      .get(`http://localhost:3000/api/shows/now_playing?region=IN&page=1`)
+      .then((resp) => {
+        Current.push(...resp.data.results);
+      });
+    await axios
+      .get(`http://localhost:3000/api/shows/now_playing?region=NP&page=1`)
+      .then((resp) => {
+        resp.data.results.forEach((movie) => {
+          if (!Current.find((m) => m._id === movie._id)) {
+            Current.push(movie);
+          }
+        });
+        setCurrentMovies(Current);
+      });
+  }
+  // useEffect(() => {
+  //   fetchMovies();
+  // }, []);
 
   const handleAddDateAndTime = () => {
     if (!dateAndTime) {
@@ -31,7 +54,6 @@ const AddShow = () => {
       return prev;
     });
   };
-
   const handleRemoveDateAndTime = (date, time) => {
     setTotalDateAndTime((prev) => {
       const times = prev[date] || [];
@@ -44,9 +66,7 @@ const AddShow = () => {
       return { ...prev };
     });
   };
-  // console.log(totalDateAndTime);
-
-  const handleAddShow = () => {
+  const handleAddShow = async () => {
     if (!selectedMovies) {
       if (toastId) toast.dismiss(toastId);
       toastId = toast.error("Select movie");
@@ -57,13 +77,32 @@ const AddShow = () => {
       toastId = toast.error("Select date and time");
       return;
     }
-
-    toast.success("Show added successfully");
+    await axios
+      .post(`http://localhost:3000/api/shows/addShow`, {
+        movieId: selectedMovies,
+        showDateTime: totalDateAndTime,
+      })
+      .then((resp) => {
+        console.log(resp);
+        setSelectedMovies(null);
+        setDateAndTime("");
+        setTotalDateAndTime({});
+        if (toastId) toast.dismiss(toastId);
+        toast.success("Show added successfully");
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
   };
-
   return (
     <>
       <div className="gradient relative min-h-screen pt-24 pb-8 pl-20 md:pl-48 lg:pl-56 xl:pl-70">
+        {!CurrentMovies.length && (
+          <Loader
+            z={10}
+            translate={"translate-x-12 md:translate-x-22 translate-y-2 "}
+          />
+        )}
         <Title text1="Add" text2="Show" />
         <h2 className="py-4 text-sm font-semibold text-neutral-700 md:text-lg lg:pt-8">
           Now Playing movies
@@ -96,7 +135,6 @@ const AddShow = () => {
             ))}
           </div>
         </div>
-
         {/* date and time selection */}
         <div className="mt-8">
           <label
@@ -119,7 +157,6 @@ const AddShow = () => {
             Add
           </button>
         </div>
-
         {/*display total date and time */}
         {Object.keys(totalDateAndTime).length > 0 && (
           <div className="my-8">
@@ -151,7 +188,6 @@ const AddShow = () => {
             </div>
           </div>
         )}
-
         {/* add show */}
         <div className="my-8">
           <button
@@ -165,5 +201,4 @@ const AddShow = () => {
     </>
   );
 };
-
 export default AddShow;
