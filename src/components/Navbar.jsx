@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Search, Menu, X, TicketPlus } from "lucide-react";
+import { Search, Menu, X, TicketPlus, UserStar } from "lucide-react";
 
 import {
   SignedIn,
@@ -32,6 +33,32 @@ const links = [
     path: "/releases",
   },
 ];
+const smallLinks = [
+  {
+    name: "Home",
+    path: "/",
+  },
+  {
+    name: "Movies",
+    path: "/movies",
+  },
+  {
+    name: "Theatre",
+    path: "/theatre",
+  },
+  {
+    name: "Activities",
+    path: "/activities",
+  },
+  {
+    name: "Ticket rate",
+    path: "/ticketRate",
+  },
+  {
+    name: "Gallery",
+    path: "/gallery",
+  },
+];
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropDown, setDropDown] = useState(false);
@@ -39,10 +66,19 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed z-40 flex w-full items-center justify-between border-b border-neutral-200 bg-white px-6 py-5 md:px-16 lg:px-24 lg:text-sm xl:px-36 xl:text-base">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{
+        opacity: 1,
+        transition: {
+          duration: 0.1,
+        },
+      }}
+      className="fixed z-40 flex w-full items-center justify-between border-b border-neutral-200 bg-white px-6 py-5 md:px-16 lg:px-24 lg:text-sm xl:px-36 xl:text-base"
+    >
       <Link to="/" onClick={() => scrollTo(0, 0)}>
         <img
-          src="../media/navLogo.svg"
+          src="../../navLogo.svg"
           alt="Logo"
           className="w-12 md:w-16 xl:w-20"
         />
@@ -53,7 +89,7 @@ const Navbar = () => {
           link.name == "More" ? (
             <div
               key={link.name}
-              className="relative h-full cursor-pointer px-3 py-1.5 text-neutral-700 hover:text-black"
+              className="relative h-full cursor-pointer px-3 py-1.5 text-neutral-700 hover:text-red-500"
               onMouseEnter={() => setDropDown(true)}
               onMouseLeave={() => setDropDown(false)}
             >
@@ -65,7 +101,7 @@ const Navbar = () => {
                     onClick={() => {
                       (scrollTo(0, 0), setDropDown(false));
                     }}
-                    className="block py-2 transition-colors duration-300 hover:bg-neutral-200 hover:text-black"
+                    className="block py-2 transition-colors duration-300 hover:bg-neutral-100 hover:text-red-500"
                   >
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ticket Rate
                   </NavLink>
@@ -74,7 +110,7 @@ const Navbar = () => {
                     onClick={() => {
                       (scrollTo(0, 0), setDropDown(false));
                     }}
-                    className="block py-2 transition-colors duration-300 hover:bg-neutral-200 hover:text-black"
+                    className="block py-2 transition-colors duration-300 hover:bg-neutral-100 hover:text-red-500"
                   >
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gallery
                   </NavLink>
@@ -87,9 +123,9 @@ const Navbar = () => {
               to={link.path}
               className={({ isActive }) => {
                 if (isActive) {
-                  return `rounded-full bg-blue-100 px-3 py-1.5 text-blue-800`;
+                  return `un rounded-full px-3 py-1.5 text-red-600 underline underline-offset-4`;
                 }
-                return `rounded-full px-3 py-1.5 text-neutral-700 transition-colors duration-300 hover:bg-neutral-200 hover:text-black`;
+                return `rounded-full px-3 py-1.5 text-neutral-700 transition-colors duration-300 hover:text-red-500`;
               }}
               onClick={() => scrollTo(0, 0)}
             >
@@ -114,6 +150,14 @@ const Navbar = () => {
                   labelIcon={<TicketPlus size={16} />}
                   onClick={() => navigate("/myBookings")}
                 />
+                {user?.emailAddresses[0]?.emailAddress ==
+                  import.meta.env.VITE_ADMIN_EMAIL && (
+                  <UserButton.Action
+                    label="Admin Dashboard"
+                    labelIcon={<UserStar size={16} />}
+                    onClick={() => navigate("/admin/dashboard")}
+                  />
+                )}
               </UserButton.MenuItems>
             </UserButton>
           </SignedIn>
@@ -145,14 +189,14 @@ const Navbar = () => {
               (scrollTo(0, 0), setIsOpen(!isOpen));
             }}
           />
-          <div className="flex w-full flex-col gap-4 px-6 pt-16 pb-6 text-center font-medium shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-            {links.map((link) => (
+          <div className="flex w-full flex-col gap-4 px-6 pt-16 pb-6 text-center font-medium">
+            {smallLinks.map((link) => (
               <NavLink
                 key={link.name}
                 to={link.path}
                 className={({ isActive }) => {
                   if (isActive) {
-                    return `mx-auto rounded-full bg-blue-100 px-6 py-1.5 text-blue-800 md:px-20`;
+                    return `mx-auto rounded-full px-6 py-1.5 text-red-500 md:px-20`;
                   }
                   return `rounded-full px-3 py-1.5 text-neutral-700`;
                 }}
@@ -165,7 +209,7 @@ const Navbar = () => {
             ))}
             {user ? null : (
               <button
-                className="group relative mx-auto overflow-hidden rounded-full border px-10 py-1.5 md:px-24"
+                className="group relative mx-auto overflow-hidden rounded-full border px-8 py-1.5 md:px-16"
                 onClick={() => {
                   (scrollTo(0, 0), setIsOpen(!isOpen));
                 }}
@@ -176,7 +220,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,10 +1,13 @@
-// src/pages/Contact.jsx
 import React, { useState } from "react";
+import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
+import { toast } from "react-hot-toast";
 
 const Contact = () => {
   const [errors, setErrors] = useState({});
+  const { getToken } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const newErrors = {};
@@ -14,11 +17,32 @@ const Contact = () => {
     if (!formData.get("message")) newErrors.message = "Message is required";
 
     setErrors(newErrors);
+    const token = await getToken();
+
+    if (!token) {
+      toast.error("You are not signed in");
+      return;
+    }
 
     if (Object.keys(newErrors).length === 0) {
-      //  Handle form submission (API call, email, etc.)
-      alert("Form submitted successfully!");
-      e.target.reset();
+      await axios
+        .post(
+          "http://localhost:3000/api/contact",
+          {
+            name: formData.get("name"),
+            email: formData.get("email"),
+            subject: formData.get("subject"),
+            message: formData.get("message"),
+          },
+          { headers: { Authorization: `Bearer ${token}` } },
+        )
+        .then((response) => {
+          toast.success(response.data.message);
+          e.target.reset();
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        });
     }
   };
 

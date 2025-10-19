@@ -24,13 +24,13 @@ const footerItems = [
 ];
 const Footer = () => {
   return (
-    <div className="bg-[url(./media/footerImage.jpg)] bg-cover bg-center bg-no-repeat py-6 md:py-12">
+    <div className="bg-[url(../../footerImage.jpg)] bg-cover bg-center bg-no-repeat py-6 md:pt-6">
       <div className="flex flex-col justify-between gap-4 space-y-3 px-6 text-black md:flex-row md:px-16 lg:px-24 xl:px-36">
         <div className="space-y-3 md:space-y-6">
           <h3 className="text-base font-semibold">For Bookings</h3>
           <p className="flex items-center gap-2 text-sm">
             <FaPhone className="size-5 text-red-600" />
-            +91 9876543210
+            +977 9826367059
           </p>
         </div>
         <div className="space-y-3 md:space-y-6">
@@ -41,7 +41,7 @@ const Footer = () => {
                 <Link
                   to={item.path}
                   onClick={() => scrollTo(0, 0)}
-                  className="text-sm hover:text-black xl:text-base"
+                  className="text-sm hover:text-red-500 xl:text-base"
                 >
                   {item.name}
                 </Link>
@@ -51,8 +51,12 @@ const Footer = () => {
         </div>
         <div className="flex flex-col space-y-4 md:items-center">
           <h3 className="text-base font-semibold">Payment Partners</h3>
-          <img src="./media/khalti.png" alt="khalti" className="w-18 xl:w-22" />
-          <img src="./media/eSewa.png" alt="esewa" className="w-20 xl:w-24" />
+          <Link to="https://khalti.com/" target="_blank">
+            <img src="../../khalti.png" alt="khalti" className="w-18 xl:w-22" />
+          </Link>
+          <Link to="https://esewa.com.np/" target="_blank">
+            <img src="../../eSewa.png" alt="esewa" className="w-20 xl:w-24" />
+          </Link>
         </div>
         <div className="space-y-3 md:space-y-6">
           <h3 className="text-base font-semibold">Connect with us</h3>
@@ -66,7 +70,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="mx-auto max-w-[82%]">
-        <hr className="my-4 border-neutral-300" />
+        <hr className="my-2 border-neutral-300" />
         <p className="text-sm leading-7 text-neutral-600">
           Copyright &copy; {new Date().getFullYear()} QFX Cinemas. All Right
           Reserved.
