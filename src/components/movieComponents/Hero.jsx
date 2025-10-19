@@ -1,38 +1,47 @@
 import React from "react";
 import PlayTrailer from "../videoPlayer/PlayTrailer";
+import { ExtractGenre, ActualTime } from "../../lib/utils";
 
 import { IconClock, IconCalendarWeek } from "@tabler/icons-react";
 import { Drama } from "lucide-react";
 
-const Hero = () => {
+const Hero = ({ movie }) => {
   return (
-    <div className="flex flex-col gap-4 md:flex-row md:gap-12">
-      <div className="hidden overflow-hidden rounded-2xl shadow-[0_3px_10px_rgb(0,0,0,0.2)] md:block md:w-56 xl:w-64">
-        <img src="../media/jollyLLB.jpg" alt="jollyLLB" />
+    <div className="flex flex-col gap-4 px-2 md:flex-row md:gap-12 md:px-0">
+      <div className="block w-48 overflow-hidden rounded-2xl shadow-[0_3px_10px_rgb(0,0,0,0.2)] md:w-56 xl:w-64">
+        <img src={movie.poster} alt={movie.title} />
       </div>
       <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2 md:flex-col md:items-start">
-          <h2 className="text-xl font-semibold md:text-2xl xl:text-3xl">
-            Jolly LLB 3
+        <div className="flex flex-col items-start gap-2">
+          <h2 className="text-lg font-semibold text-neutral-800 md:text-2xl xl:text-2xl">
+            {movie.title}
           </h2>
-          <p className="w-fit rounded-full bg-neutral-800 px-3 text-white">
-            Hindi
+          <p className="w-fit rounded-full bg-neutral-800 px-2.5  text-white">
+            {movie.language}
           </p>
         </div>
         <div className="flex flex-col gap-3 text-sm font-medium md:text-sm xl:text-base">
-          <p className="flex items-center gap-2">
-            <Drama className="inline size-6 text-red-600" /> Drama, Comedy
+          <p className="flex items-center gap-2 text-neutral-800">
+            <Drama className="inline size-6 text-red-600" />{" "}
+            {movie.genres && ExtractGenre(movie.genres)}
           </p>
-          <p className="flex items-center gap-2">
-            <IconClock className="inline size-6 text-red-600" /> 2hr 30min
+          <p className="flex items-center gap-2 text-neutral-800">
+            <IconClock className="inline size-6 text-red-600" />{" "}
+            {ActualTime(movie.runtime)}
           </p>
-          <p className="flex items-center gap-2">
+          <p className="flex items-center gap-2 text-neutral-800">
             <IconCalendarWeek className="inline size-6 text-red-600" />
-            2025-09-30
+            {movie.release_date}
           </p>
         </div>
         <div className="hidden md:block">
-          <PlayTrailer />
+          {movie.youtube_trailer ? (
+            <PlayTrailer videoId={movie.youtube_trailer} />
+          ) : (
+            <p className="text-sm text-gray-500 italic">
+              Trailer not available
+            </p>
+          )}
         </div>
       </div>
     </div>
