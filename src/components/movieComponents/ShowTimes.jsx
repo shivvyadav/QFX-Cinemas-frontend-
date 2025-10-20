@@ -9,18 +9,37 @@ const ShowTimes = ({ movie }) => {
 
   useEffect(() => {
     const dates = Object.keys(movie.showDateTime);
+
     if (dates.length > 0) {
-      setSelectedDate(dates[0]);
+      const today = new Date().setHours(0, 0, 0, 0);
+
+      // ✅ Find the first upcoming (not past) date
+      const upcomingDate = dates.find((dateKey) => {
+        const dateObj = new Date(dateKey);
+        return dateObj >= today;
+      });
+
+      // ✅ If all are past, fallback to first
+      setSelectedDate(upcomingDate || dates[0]);
     }
   }, [movie.showDateTime]);
 
+  // ✅ Check if show date/time has passed
+  const isPastShow = (date, time) => {
+    const showDateTime = new Date(`${date}T${time}:00`);
+    return showDateTime < new Date();
+  };
+
   const handleBookTicket = (time) => {
+    if (isPastShow(selectedDate, time)) return;
+
     const selectedDateTimes = movie.showDateTime[selectedDate] || [];
     const selectedDateTime = selectedDateTimes.find((t) => t === time);
     if (!selectedDateTime) {
       toast.error("Selected time not available");
       return;
     }
+
     navigate(`/seatLayout/${movie._id}/${selectedDate}/${time}`);
     scrollTo(0, 0);
   };
@@ -31,7 +50,7 @@ const ShowTimes = ({ movie }) => {
         Show times
       </h2>
 
-      {/* for dates */}
+      {/* Date selection */}
       <h2 className="text-sm font-medium text-neutral-800 md:text-base">
         Choose date
       </h2>
@@ -41,16 +60,22 @@ const ShowTimes = ({ movie }) => {
           const { day, month } = FormatDate(dateKey);
           const isActive = selectedDate === dateKey;
 
+          // Check if date is past
+          const dateObj = new Date(dateKey);
+          const isPastDate = dateObj < new Date().setHours(0, 0, 0, 0);
+
           return (
             <div
               key={dateKey}
               onClick={() => {
-                setSelectedDate(dateKey);
+                if (!isPastDate) setSelectedDate(dateKey);
               }}
-              className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border px-3 py-2 transition-all duration-200 ${
-                isActive
-                  ? "border-black bg-black text-white"
-                  : "bg-white text-neutral-800 hover:bg-neutral-100"
+              className={`flex flex-col items-center justify-center rounded-xl border px-3 py-2 transition-all duration-200 ${
+                isPastDate
+                  ? "cursor-default bg-neutral-100 text-neutral-400 opacity-60"
+                  : isActive
+                    ? "cursor-pointer border-black bg-black text-white"
+                    : "cursor-pointer bg-white text-neutral-800 hover:bg-neutral-100"
               }`}
             >
               <p className="text-lg font-medium xl:text-xl">{day}</p>
@@ -60,21 +85,29 @@ const ShowTimes = ({ movie }) => {
         })}
       </div>
 
-      {/* for timings */}
+      {/* Timings */}
       <h2 className="pt-4 text-sm font-medium text-neutral-800 md:text-base">
         Available timings
       </h2>
+
       <div className="my-2 flex flex-wrap gap-4">
         {selectedDate ? (
-          movie.showDateTime[selectedDate].map((time, i) => (
-            <div
-              key={i}
-              onClick={() => handleBookTicket(time)}
-              className="cursor-pointer rounded-xl border bg-white px-4 py-2.5 text-base font-medium text-neutral-800 transition-all duration-200 hover:bg-neutral-100 xl:px-8 xl:py-3"
-            >
-              {FormatTime(time)}
-            </div>
-          ))
+          movie.showDateTime[selectedDate].map((time, i) => {
+            const past = isPastShow(selectedDate, time);
+            return (
+              <div
+                key={i}
+                onClick={() => !past && handleBookTicket(time)}
+                className={`rounded-xl border px-4 py-2.5 text-base font-medium transition-all duration-200 xl:px-8 xl:py-3 ${
+                  past
+                    ? "cursor-default bg-neutral-100 text-neutral-400 opacity-60"
+                    : "cursor-pointer bg-white text-neutral-800 hover:bg-neutral-100"
+                }`}
+              >
+                {FormatTime(time)}
+              </div>
+            );
+          })
         ) : (
           <p className="text-sm text-neutral-500">Select a date to see times</p>
         )}
