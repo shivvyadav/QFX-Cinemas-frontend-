@@ -207,16 +207,19 @@ const Navbar = () => {
                 {link.name}
               </NavLink>
             ))}
-            {user ? null : (
-              <button
-                className="group relative mx-auto overflow-hidden rounded-full border px-8 py-1.5 md:px-16"
-                onClick={() => {
-                  (scrollTo(0, 0), setIsOpen(!isOpen));
-                }}
-              >
-                Login
-              </button>
-            )}
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="group relative mx-auto overflow-hidden rounded-full border px-8 py-1.5 md:px-16"
+                >
+                  <span className="absolute inset-0 -translate-x-full bg-neutral-900 transition-transform duration-300 ease-linear group-hover:translate-x-0" />
+                  <span className="relative z-10 text-black transition-colors duration-300 group-hover:text-white">
+                    Login
+                  </span>
+                </button>
+              </SignInButton>
+            </SignedOut>
           </div>
         </div>
       )}
