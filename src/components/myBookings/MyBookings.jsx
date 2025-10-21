@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import Loader from "../loader/Loader";
-import {ActualTime} from "../../lib/utils";
+import { ActualTime, FormatTime } from "../../lib/utils";
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -13,9 +12,12 @@ const MyBookings = () => {
   const fetchMyBookings = async () => {
     try {
       const token = await getToken();
-      const res = await axios.get("http://localhost:3000/api/bookings/my", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/bookings/my`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
       if (res.data.success) {
         setBookings(res.data.bookings);
@@ -40,14 +42,7 @@ const MyBookings = () => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{
-        opacity: 1,
-        transition: { duration: 0.3 },
-      }}
-      className="min-h-screen px-6 py-16 md:px-24 md:py-20 lg:px-40 xl:px-64 xl:py-24"
-    >
+    <div className="min-h-screen px-6 py-16 md:px-24 md:py-20 lg:px-40 xl:px-64 xl:py-24">
       <h1 className="my-6 text-xl font-semibold xl:text-2xl">My Bookings</h1>
 
       {bookings.length === 0 ? (
@@ -62,7 +57,7 @@ const MyBookings = () => {
               <img
                 src={booking.show?.poster || "../media/defaultPoster.jpg"}
                 alt={booking.show?.title}
-                className="hidden h-full rounded-md md:block md:w-32 xl:w-48"
+                className="hidden h-full rounded-md md:block md:h-36 md:w-32 xl:h-full xl:w-48"
               />
               <div className="space-y-2 p-2 xl:p-4">
                 <h2 className="text-md font-semibold xl:text-xl">
@@ -70,11 +65,11 @@ const MyBookings = () => {
                 </h2>
                 <p className="text-sm font-medium text-neutral-700">
                   {booking.show?.runtime
-                    ? ActualTime(booking.show?.runtime)
+                    ? ActualTime(booking.show.runtime)
                     : "N/A"}
                 </p>
                 <p className="text-sm font-medium text-neutral-700">
-                  {booking.date} | {booking.time}
+                  {booking.date} | {FormatTime(booking.time)}
                 </p>
               </div>
             </div>
@@ -101,7 +96,7 @@ const MyBookings = () => {
           </div>
         ))
       )}
-    </motion.div>
+    </div>
   );
 };
 
