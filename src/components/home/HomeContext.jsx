@@ -1,7 +1,7 @@
 // src/context/MyContext.jsx
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import Loader from "../Loader/Loader";
+import Loader from "../loader/Loader";
 import AppContext from "../../context/AppContext";
 
 const MyContext = React.createContext({
