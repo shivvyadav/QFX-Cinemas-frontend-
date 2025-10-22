@@ -1,60 +1,55 @@
-// src/components/PricingTable.jsx
-import React from "react";
-
+const data = [
+  {
+    day: "SUN",
+    morningSofa: 300,
+    morningRecliner: 250,
+    afternoonSofa: 500,
+    afternoonRecliner: 440,
+  },
+  {
+    day: "MON",
+    morningSofa: 250,
+    morningRecliner: 200,
+    afternoonSofa: 250,
+    afternoonRecliner: 200,
+  },
+  {
+    day: "TUE",
+    morningSofa: 250,
+    morningRecliner: 250,
+    afternoonSofa: 350,
+    afternoonRecliner: 250,
+  },
+  {
+    day: "WED",
+    morningSofa: 250,
+    morningRecliner: 250,
+    afternoonSofa: 350,
+    afternoonRecliner: 250,
+  },
+  {
+    day: "THU",
+    morningSofa: 300,
+    morningRecliner: 250,
+    afternoonSofa: 350,
+    afternoonRecliner: 300,
+  },
+  {
+    day: "FRI",
+    morningSofa: 300,
+    morningRecliner: 250,
+    afternoonSofa: 500,
+    afternoonRecliner: 440,
+  },
+  {
+    day: "SAT",
+    morningSofa: 300,
+    morningRecliner: 250,
+    afternoonSofa: 500,
+    afternoonRecliner: 440,
+  },
+];
 const TicketRate = () => {
-  const data = [
-    {
-      day: "SUN",
-      morningSofa: 300,
-      morningRecliner: 250,
-      afternoonSofa: 500,
-      afternoonRecliner: 440,
-    },
-    {
-      day: "MON",
-      morningSofa: 250,
-      morningRecliner: 200,
-      afternoonSofa: 250,
-      afternoonRecliner: 200,
-    },
-    {
-      day: "TUE",
-      morningSofa: 250,
-      morningRecliner: 250,
-      afternoonSofa: 350,
-      afternoonRecliner: 250,
-    },
-    {
-      day: "WED",
-      morningSofa: 250,
-      morningRecliner: 250,
-      afternoonSofa: 350,
-      afternoonRecliner: 250,
-    },
-    {
-      day: "THU",
-      morningSofa: 300,
-      morningRecliner: 250,
-      afternoonSofa: 350,
-      afternoonRecliner: 300,
-    },
-    {
-      day: "FRI",
-      morningSofa: 300,
-      morningRecliner: 250,
-      afternoonSofa: 500,
-      afternoonRecliner: 440,
-    },
-    {
-      day: "SAT",
-      morningSofa: 300,
-      morningRecliner: 250,
-      afternoonSofa: 500,
-      afternoonRecliner: 440,
-    },
-  ];
-
-  // JS Date().getDay() → 0 = Sun, 1 = Mon, ... 6 = Sat
   const todayIndex = new Date().getDay();
 
   return (

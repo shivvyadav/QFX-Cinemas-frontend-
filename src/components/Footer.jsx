@@ -24,7 +24,7 @@ const footerItems = [
 ];
 const Footer = () => {
   return (
-    <div className="bg-[url(../../footerImage.jpg)] bg-cover bg-center bg-no-repeat py-6 md:pt-6">
+    <div className="bg-[url(../../footer.png)] bg-cover bg-no-repeat py-6 md:pt-6">
       <div className="flex flex-col justify-between gap-4 space-y-3 px-6 text-black md:flex-row md:px-16 lg:px-24 xl:px-36">
         <div className="space-y-3 md:space-y-6">
           <h3 className="text-base font-semibold">For Bookings</h3>
@@ -35,7 +35,7 @@ const Footer = () => {
         </div>
         <div className="space-y-3 md:space-y-6">
           <h3 className="text-base font-semibold">Quick Links</h3>
-          <ul className="space-y-4 font-medium text-neutral-600">
+          <ul className="space-y-4 font-medium text-neutral-700">
             {footerItems.map((item) => (
               <li key={item.name}>
                 <Link
@@ -54,17 +54,14 @@ const Footer = () => {
           <Link to="https://khalti.com/" target="_blank">
             <img src="../../khalti.png" alt="khalti" className="w-18 xl:w-22" />
           </Link>
-          <Link to="https://esewa.com.np/" target="_blank">
-            <img src="../../eSewa.png" alt="esewa" className="w-20 xl:w-24" />
-          </Link>
         </div>
         <div className="space-y-3 md:space-y-6">
           <h3 className="text-base font-semibold">Connect with us</h3>
           <div>
             <div className="flex gap-4 md:justify-center">
-              <FaFacebook className="text-2xl hover:text-blue-500" />
-              <FaInstagram className="text-2xl hover:text-pink-500" />
-              <FaTiktok className="text-2xl text-neutral-700 hover:text-black" />
+              <FaFacebook className="cursor-pointer text-2xl hover:text-blue-500" />
+              <FaInstagram className="cursor-pointer text-2xl hover:text-pink-500" />
+              <FaTiktok className="cursor-pointer text-2xl text-neutral-700 hover:text-black" />
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ const Seat = ({ _id, isSelected, isOccupied, onSelect }) => {
   return (
     <div
       onClick={handleClick}
-      className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border text-xs font-medium transition-all duration-200 ${
+      className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border text-xs font-medium transition-colors duration-200 ${
         isOccupied
           ? "border-neutral-300 text-neutral-400"
           : isSelected

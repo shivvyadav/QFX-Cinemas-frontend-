@@ -19,6 +19,7 @@ import Error from "./components/Error";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Contact from "./components/Contact";
 import TermsAndCondition from "./components/TermsAndCondition";
+import VerifyPayment from "./components/payment/VerifyPayment.jsx";
 
 // admin imports
 import Nav from "./admin/Nav";
@@ -116,6 +117,10 @@ const Routes = () => {
     {
       path: "/seatLayout/:movie_id/:date/:time",
       element: <SeatLayout />,
+    },
+    {
+      path: "/payment/verifyPayment",
+      element: <VerifyPayment />,
     },
     {
       path: "*",

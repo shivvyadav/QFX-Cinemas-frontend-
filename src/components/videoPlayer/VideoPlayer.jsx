@@ -1,5 +1,3 @@
-// src/components/VideoPlayer.jsx
-import React from "react";
 import ReactPlayer from "react-player";
 import { X } from "lucide-react";
 

@@ -53,11 +53,11 @@ const MyBookings = () => {
             key={booking._id}
             className="mb-4 flex w-full justify-between rounded-lg border border-neutral-300 bg-neutral-50 shadow md:p-3 xl:h-48"
           >
-            <div className="flex gap-2 overflow-hidden xl:gap-6">
+            <div className="flex gap-2 overflow-hidden xl:gap-4">
               <img
                 src={booking.show?.poster || "../media/defaultPoster.jpg"}
                 alt={booking.show?.title}
-                className="hidden h-full rounded-md md:block md:h-36 md:w-32 xl:h-full xl:w-48"
+                className="hidden h-full rounded-md md:block md:h-36 md:w-32 xl:h-full xl:w-44"
               />
               <div className="space-y-2 p-2 xl:p-4">
                 <h2 className="text-md font-semibold xl:text-xl">

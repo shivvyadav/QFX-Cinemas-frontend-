@@ -27,7 +27,7 @@ const Contact = () => {
     if (Object.keys(newErrors).length === 0) {
       await axios
         .post(
-          "http://localhost:3000/api/contact",
+          `${import.meta.env.VITE_BASE_URL}/api/contact`,
           {
             name: formData.get("name"),
             email: formData.get("email"),

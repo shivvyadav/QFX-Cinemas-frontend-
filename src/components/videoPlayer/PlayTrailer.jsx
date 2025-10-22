@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import VideoPlayer from "./VideoPlayer";
-import { PlayIcon } from "lucide-react";
+import { IconPlayerPlayFilled } from "@tabler/icons-react";
 
 const PlayTrailer = ({ videoId }) => {
-  const videoLink = "https://www.youtube.com/watch?v=sRjOrbStr1Y";
   const [showPlayer, setShowPlayer] = useState(false);
 
   return (
     <>
       <button
         onClick={() => setShowPlayer(true)}
-        className="rounded-full bg-red-500 px-5 py-2 font-medium text-white hover:bg-red-600"
+        className="rounded-full bg-red-500 px-3 py-1.5 font-medium text-white hover:bg-red-600"
       >
-        <PlayIcon className="inline size-4" /> Play Trailer
+        <IconPlayerPlayFilled className="inline size-4" /> Play Trailer
       </button>
 
       {showPlayer && (
-        <VideoPlayer url={videoLink} onClose={() => setShowPlayer(false)} />
+        <VideoPlayer
+          url={videoId}
+          onClose={() => setShowPlayer(false)}
+          key={videoId}
+        />
       )}
     </>
   );

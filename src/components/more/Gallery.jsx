@@ -1,5 +1,3 @@
-import React from "react";
-
 const Gallery = () => {
   return (
     <div className="min-h-screen pt-20">
@@ -9,7 +7,7 @@ const Gallery = () => {
       <div className="flex flex-col gap-6 px-6 py-8 md:flex-row md:flex-wrap md:px-16 md:py-16 lg:px-24 xl:px-36">
         <div className="overflow-hidden rounded-md shadow">
           <img
-            src="../media/premium.jpg"
+            src="../premium.jpg"
             alt=""
             className="h-48 w-full md:w-76 lg:w-80"
           />
@@ -19,22 +17,22 @@ const Gallery = () => {
         </div>
         <div className="overflow-hidden rounded-md shadow">
           <img
-            src="../media/Itahari.jpg"
+            src="../Itahari.jpg"
             alt=""
             className="h-48 w-full md:w-76 lg:w-80"
           />
           <p className="bg-black text-center text-sm leading-8 text-white">
-            QFX Cinema(Itahari)
+            QFX Cinema (Itahari)
           </p>
         </div>
         <div className="overflow-hidden rounded-md shadow">
           <img
-            src="../media/biratnagar.jpeg"
+            src="../biratnagar.jpeg"
             alt=""
             className="h-48 w-full md:w-76 lg:w-80"
           />
           <p className="bg-black text-center text-sm leading-8 text-white">
-            QFX Cinema(Biratnagar)
+            QFX Cinema (Biratnagar)
           </p>
         </div>
       </div>

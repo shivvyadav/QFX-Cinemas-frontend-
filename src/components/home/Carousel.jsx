@@ -7,7 +7,6 @@ import MyContext from "./HomeContext";
 const Carousel = () => {
   const { handlePrev, handleNext, movies, film, left, right } =
     useContext(MyContext);
-
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-teal-100 via-teal-50 to-white">
       <div
@@ -16,19 +15,14 @@ const Carousel = () => {
       >
         <ChevronLeft />
       </div>
-      <CarouselContent
-        movies={movies[film]}
-        uid={movies[film].title}
-        left={left}
-        right={right}
-      />
+      <CarouselContent movie={movies[film]} left={left} right={right} />
       <div
         className="absolute z-10 flex cursor-pointer items-center justify-center rounded-full hover:text-neutral-600 md:top-[38%] md:right-[8%] lg:top-[42%] lg:right-[9%] xl:top-[45%]"
         onClick={handleNext}
       >
         <ChevronRight />
       </div>
-      <HomeCard />
+      <HomeCard movie={movies[film]} />
     </div>
   );
 };

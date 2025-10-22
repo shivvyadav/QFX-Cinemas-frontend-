@@ -18,12 +18,16 @@ const AddShow = () => {
   async function fetchMovies() {
     const Current = [];
     await axios
-      .get(`http://localhost:3000/api/shows/now_playing?region=IN&page=1`)
+      .get(
+        `${import.meta.env.VITE_BASE_URL}/api/shows/now_playing?region=IN&page=1`,
+      )
       .then((resp) => {
         Current.push(...resp.data.results);
       });
     await axios
-      .get(`http://localhost:3000/api/shows/now_playing?region=NP&page=1`)
+      .get(
+        `${import.meta.env.VITE_BASE_URL}/api/shows/now_playing?region=NP&page=1`,
+      )
       .then((resp) => {
         resp.data.results.forEach((movie) => {
           if (!Current.find((m) => m._id === movie._id)) {
@@ -33,9 +37,9 @@ const AddShow = () => {
         setCurrentMovies(Current);
       });
   }
-  // useEffect(() => {
-  //   fetchMovies();
-  // }, []);
+  useEffect(() => {
+    fetchMovies();
+  }, []);
 
   const handleAddDateAndTime = () => {
     if (!dateAndTime) {
@@ -78,17 +82,17 @@ const AddShow = () => {
       return;
     }
     await axios
-      .post(`http://localhost:3000/api/shows/addShow`, {
+      .post(`${import.meta.env.VITE_BASE_URL}/api/shows/addShow`, {
         movieId: selectedMovies,
         showDateTime: totalDateAndTime,
       })
       .then((resp) => {
-        console.log(resp);
+        scrollTo(0, 0);
         setSelectedMovies(null);
         setDateAndTime("");
         setTotalDateAndTime({});
         if (toastId) toast.dismiss(toastId);
-        toast.success("Show added successfully");
+        toast.success(resp.data.message || "Show added successfully");
       })
       .catch((err) => {
         toast.error(err.response.data.message);

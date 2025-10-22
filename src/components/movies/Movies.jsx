@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { motion } from "framer-motion";
 import AppContext from "../../context/AppContext";
 import AcrossRegion from "./AcrossRegion";
 import OnlyInTheatre from "../theatre/OnlyInTheatre";
@@ -13,14 +12,7 @@ const Movies = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{
-        opacity: 1,
-        transition: { duration: 0.3 },
-      }}
-      className="min-h-screen space-y-8 px-4 py-20 md:px-16 lg:px-32 xl:px-58"
-    >
+    <div className="min-h-screen space-y-8 px-4 py-20 md:px-16 lg:px-32 xl:px-58">
       {acrossRegionMovies.length > 0 && (
         <div>
           <h2 className="px-2 py-6 font-heading text-lg font-semibold text-neutral-800 lg:text-2xl xl:py-8">
@@ -47,7 +39,7 @@ const Movies = () => {
           <Upcoming movies={upcomingMovies} />
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 

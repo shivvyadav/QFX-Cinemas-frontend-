@@ -20,9 +20,12 @@ const ProtectedAdminRoute = ({ children }) => {
       try {
         setIsVerifying(true);
         const token = await getToken();
-        const res = await axios.get("http://localhost:3000/api/admin/verify", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/api/admin/verify`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         if (!cancelled && res.data?.success) {
           setIsAdmin(true);

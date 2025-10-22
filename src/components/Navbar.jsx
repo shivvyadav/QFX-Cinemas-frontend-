@@ -136,10 +136,10 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-8 font-medium">
-        <Search
+        {/* <Search
           size={20}
           className="hidden cursor-pointer hover:scale-110 lg:block"
-        />
+        /> */}
 
         {user ? (
           <SignedIn>

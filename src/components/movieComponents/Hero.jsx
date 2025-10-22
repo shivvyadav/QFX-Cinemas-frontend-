@@ -16,7 +16,7 @@ const Hero = ({ movie }) => {
           <h2 className="text-lg font-semibold text-neutral-800 md:text-2xl xl:text-2xl">
             {movie.title}
           </h2>
-          <p className="w-fit rounded-full bg-neutral-800 px-2.5  text-white">
+          <p className="w-fit rounded-full bg-neutral-800 px-2.5 text-white">
             {movie.language}
           </p>
         </div>
@@ -34,7 +34,7 @@ const Hero = ({ movie }) => {
             {movie.release_date}
           </p>
         </div>
-        <div className="hidden md:block">
+        <div className="">
           {movie.youtube_trailer ? (
             <PlayTrailer videoId={movie.youtube_trailer} />
           ) : (

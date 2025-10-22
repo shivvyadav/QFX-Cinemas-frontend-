@@ -1,5 +1,3 @@
-import React from "react";
-
 const AboutMovie = ({ movie }) => {
   return (
     <div className="rounded-2xl border border-neutral-200 p-6 lg:p-8">
