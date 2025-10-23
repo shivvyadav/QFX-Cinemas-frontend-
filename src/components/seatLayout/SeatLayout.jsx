@@ -161,12 +161,14 @@ const SeatLayout = () => {
         {/* sticky header */}
         <div className="sticky top-20 z-10 flex w-full items-center justify-between border-b border-neutral-200 bg-white px-6 py-3 text-sm md:px-16 lg:px-24 xl:px-0 xl:text-base">
           <div className="text-neutral-700">
-            <h2 className="text-base font-semibold lg:text-lg">
+            <h2 className="text-[15px] font-semibold lg:text-lg">
               {movie?.title}
             </h2>
-            <p>{movie.genres && ExtractGenre(movie.genres)}</p>
+            <p className="text-[13px] md:text-sm">
+              {movie.genres && ExtractGenre(movie.genres)}
+            </p>
           </div>
-          <div className="font-medium">
+          <div className="font-medium text-neutral-800">
             <h3>{date}</h3>
             <h3>
               {FormatTime(time)}, {getDayName(date)}
@@ -176,30 +178,33 @@ const SeatLayout = () => {
 
         {/* seat layout */}
         <div className="mx-6 overflow-x-auto py-4 text-center md:mx-16 lg:mx-28 xl:mx-24">
-          {/* Sofa section */}
-          <h2 className="py-4 text-sm font-medium text-neutral-800 md:text-lg">
-            Sofa : Rs. {rates.sofa}
-          </h2>
-          {renderRow("A", 12)}
-          {renderRow("B", 12)}
+          {/* ⬇️ New inner wrapper ensures scrollable width */}
+          <div className="inline-block min-w-[500px] sm:min-w-full">
+            {/* Sofa section */}
+            <h2 className="py-4 text-sm font-medium text-neutral-800 md:text-lg">
+              Sofa : Rs. {rates.sofa}
+            </h2>
+            {renderRow("A", 12)}
+            {renderRow("B", 12)}
 
-          {/* Recliner section */}
-          <h2 className="py-4 text-sm font-medium text-neutral-800 md:text-lg">
-            Recliner : Rs. {rates.recliner}
-          </h2>
-          {["C", "D", "E", "F", "G", "H"].map((row) => (
-            <React.Fragment key={row}>{renderRow(row, 7, 9)}</React.Fragment>
-          ))}
+            {/* Recliner section */}
+            <h2 className="py-4 text-sm font-medium text-neutral-800 md:text-lg">
+              Recliner : Rs. {rates.recliner}
+            </h2>
+            {["C", "D", "E", "F", "G", "H"].map((row) => (
+              <React.Fragment key={row}>{renderRow(row, 7, 9)}</React.Fragment>
+            ))}
 
-          {/* Last row */}
-          <h2 className="py-4 text-sm font-medium text-neutral-800 md:text-lg">
-            Solo : Rs. {rates.solo}
-          </h2>
-          {renderRow("I", 12)}
+            {/* Last row */}
+            <h2 className="py-4 text-sm font-medium text-neutral-800 md:text-lg">
+              Solo : Rs. {rates.solo}
+            </h2>
+            {renderRow("I", 12)}
 
-          {/* Screen */}
-          <div className="mt-12 mb-24 flex justify-center">
-            <img src="../../../screen.png" alt="screen" className="w-96" />
+            {/* Screen */}
+            <div className="mt-12 mb-24 flex justify-center">
+              <img src="../../../screen.png" alt="screen" className="w-96" />
+            </div>
           </div>
         </div>
       </div>
