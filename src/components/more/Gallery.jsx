@@ -1,7 +1,7 @@
 const Gallery = () => {
   return (
-    <div className="min-h-screen pt-20">
-      <h1 className="bg-[#e2e2e2] text-center font-heading text-3xl leading-18 font-semibold md:leading-24">
+    <div className="min-h-screen pt-17 pb-12 xl:pt-20">
+      <h1 className="bg-[#e2e2e2] text-center font-heading text-2xl leading-18 font-semibold md:leading-24 lg:text-3xl">
         Gallery
       </h1>
       <div className="flex flex-col gap-6 px-6 py-8 md:flex-row md:flex-wrap md:px-16 md:py-16 lg:px-24 xl:px-36">

@@ -53,8 +53,8 @@ const TicketRate = () => {
   const todayIndex = new Date().getDay();
 
   return (
-    <div className="py-20">
-      <h1 className="bg-[#e2e2e2] text-center font-heading text-3xl leading-18 font-semibold md:leading-24">
+    <div className="py-17 xl:py-20">
+      <h1 className="bg-[#e2e2e2] text-center font-heading text-2xl leading-18 font-semibold md:leading-24 lg:text-3xl">
         Ticket Prices
       </h1>
       <div className="overflow-x-auto px-6 pt-16 md:px-16 lg:px-24 xl:px-36">
