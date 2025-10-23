@@ -11,7 +11,9 @@ const ListShows = () => {
   useEffect(() => {
     const fetchShows = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/shows/summary`);
+        const res = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/api/shows/summary`,
+        );
         if (res.data.success) setShows(res.data.shows);
       } catch (error) {
         console.error("Error fetching shows summary:", error);
@@ -36,7 +38,7 @@ const ListShows = () => {
         <p className="mt-10 text-center text-gray-500">No shows found.</p>
       ) : (
         <div className="mt-8 overflow-x-auto">
-          <table className="border-collapse overflow-hidden rounded-lg text-sm shadow md:min-w-lg lg:min-w-2xl xl:min-w-5xl mr-4">
+          <table className="mr-4 border-collapse overflow-hidden rounded-lg text-sm shadow md:min-w-lg lg:min-w-2xl xl:min-w-5xl">
             <thead>
               <tr className="bg-teal-500 text-left text-white">
                 <th className="border px-3 py-2.5">Movie Name</th>
