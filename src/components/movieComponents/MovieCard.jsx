@@ -8,27 +8,47 @@ const MovieCard = ({ movie, type, activeMovieId, setActiveMovieId }) => {
   const cardRef = useRef(null);
   const isActive = activeMovieId === movie._id;
 
-  // 🧠 Detect click outside of card
+  // 🧠 Detect outside click to close active card
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (cardRef.current && !cardRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (cardRef.current && !cardRef.current.contains(e.target)) {
         setActiveMovieId(null);
       }
     };
-    // Only listen when overlay is active
-    if (isActive) {
-      document.addEventListener("click", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
+    if (isActive) document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, [isActive, setActiveMovieId]);
+
+  // 🖱️ Handle card click for mobile
+  const handleCardClick = (e) => {
+    e.stopPropagation();
+
+    // Toggle overlay for the clicked card
+    if (isActive) {
+      setActiveMovieId(null);
+    } else {
+      setActiveMovieId(movie._id);
+    }
+  };
+
+  // 🏃 Navigate handlers (used inside overlay buttons)
+  const handleView = (e) => {
+    e.stopPropagation();
+    navigate(`/movies/details/${movie._id}`);
+    scrollTo(0, 0);
+  };
+
+  const handleBuy = (e) => {
+    e.stopPropagation();
+    navigate(`/theatre/buy/${movie._id}`);
+    scrollTo(0, 0);
+  };
 
   return (
     <div
       ref={cardRef}
+      onClick={handleCardClick}
       className="group relative overflow-hidden rounded-xl border border-neutral-300 lg:w-60"
-      onClick={() => setActiveMovieId(isActive ? null : movie._id)}
     >
       {/* Poster */}
       <img
@@ -48,30 +68,21 @@ const MovieCard = ({ movie, type, activeMovieId, setActiveMovieId }) => {
       </div>
 
       {/* Desktop hover overlay */}
-      <div className="absolute inset-0 flex origin-bottom-left scale-0 bg-black/50 opacity-0 transition duration-400 group-hover:scale-100 group-hover:opacity-100 lg:flex" />
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-sm opacity-0 transition-opacity duration-400 group-hover:opacity-100 lg:flex">
+      <div className="absolute inset-0 hidden origin-bottom-left scale-0 bg-black/50 opacity-0 transition duration-400 group-hover:scale-100 group-hover:opacity-100 lg:flex" />
+      <div className="absolute inset-0 hidden flex-col items-center justify-center gap-4 text-sm opacity-0 transition-opacity duration-400 group-hover:opacity-100 lg:flex">
         {type === "View Details" ? (
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/movies/details/${movie._id}`);
-              scrollTo(0, 0);
-            }}
-            className="rounded-full bg-red-500/60 px-4 py-2 font-medium text-white transition-colors duration-300 hover:bg-red-600"
+            onClick={handleView}
+            className="flex gap-2 rounded-full bg-red-500/60 px-5 py-2 font-medium text-white transition-colors duration-300 hover:bg-red-600"
           >
-            <Eye className="inline size-5" /> {type}
+            <Eye className="size-5" /> {type}
           </button>
         ) : (
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/theatre/buy/${movie._id}`);
-              scrollTo(0, 0);
-            }}
+            onClick={handleBuy}
             className="flex gap-2 rounded-full bg-red-500/60 px-5 py-2 font-medium text-white transition-colors duration-300 hover:bg-red-600"
           >
-            <Ticket className="inline size-5" />
-            {type}
+            <Ticket className="size-5" /> {type}
           </button>
         )}
       </div>
@@ -80,26 +91,20 @@ const MovieCard = ({ movie, type, activeMovieId, setActiveMovieId }) => {
       {isActive && (
         <div className="lg:hidden">
           <div className="absolute inset-0 bg-black/50"></div>
-          <div
-            className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-xs"
-            onClick={(e) => e.stopPropagation()} // prevent outside close
-          >
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-xs">
             {type === "View Details" ? (
               <button
-                onClick={() => navigate(`/movies/${movie._id}`)}
+                onClick={handleView}
                 className="flex items-center gap-2 rounded-full bg-red-500 px-5 py-2 font-medium text-white"
               >
                 <Eye className="inline size-4" /> {type}
               </button>
             ) : (
               <button
-                onClick={() => {
-                  navigate(`/theatre/buy/${movie._id}`);
-                  scrollTo(0, 0);
-                }}
+                onClick={handleBuy}
                 className="flex items-center gap-2 rounded-full bg-red-500 px-5 py-2 font-medium text-white"
               >
-                <Ticket className="inline size-5" />
+                <Ticket className="inline size-4" />
                 {type}
               </button>
             )}
