@@ -18,8 +18,8 @@ const terms = [
 ];
 const PrivacyPolicy = () => {
   return (
-    <div className="pt-20 text-justify">
-      <h1 className="bg-[#e2e2e2] text-center font-heading text-3xl leading-18 font-semibold md:leading-24">
+    <div className="pt-17 text-justify xl:pt-20">
+      <h1 className="bg-[#e2e2e2] text-center font-heading text-2xl leading-18 font-semibold md:leading-24 lg:text-3xl">
         Privacy Policy
       </h1>
       <div className="my-10 px-6 md:px-16 lg:px-24 xl:px-36">

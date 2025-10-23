@@ -47,8 +47,8 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white pt-20">
-      <h1 className="bg-[#e2e2e2] text-center font-heading text-2xl leading-18 font-semibold md:text-3xl md:leading-24">
+    <div className="min-h-screen bg-white pt-17 xl:pt-20">
+      <h1 className="bg-[#e2e2e2] text-center font-heading text-2xl leading-18 font-semibold md:text-3xl md:leading-24 lg:text-3xl">
         Contact Us
       </h1>
       <div className="container mx-auto my-8 grid grid-cols-1 gap-12 px-6 md:px-16 lg:my-12 lg:grid-cols-2 lg:px-24 xl:px-36">

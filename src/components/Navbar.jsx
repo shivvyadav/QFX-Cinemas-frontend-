@@ -80,7 +80,7 @@ const Navbar = () => {
         <img
           src="../../navLogo.svg"
           alt="Logo"
-          className="w-12 md:w-16 xl:w-20"
+          className="w-16 md:w-18 xl:w-20"
         />
       </Link>
 
@@ -148,7 +148,10 @@ const Navbar = () => {
                 <UserButton.Action
                   label="My Bookings"
                   labelIcon={<TicketPlus size={16} />}
-                  onClick={() => navigate("/myBookings")}
+                  onClick={() => {
+                    navigate("/myBookings");
+                    scrollTo(0, 0);
+                  }}
                 />
                 {user?.emailAddresses[0]?.emailAddress ==
                   import.meta.env.VITE_ADMIN_EMAIL && (
@@ -174,7 +177,7 @@ const Navbar = () => {
           </SignedOut>
         )}
         <Menu
-          size={20}
+          size={24}
           className="text-text-secondary lg:hidden"
           onClick={() => setIsOpen(!isOpen)}
         />
@@ -183,7 +186,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="absolute inset-0 top-0 right-0 flex h-screen w-full flex-col gap-2 bg-white text-neutral-700 lg:hidden">
           <X
-            size={20}
+            size={24}
             className="absolute top-6 right-6 md:right-16"
             onClick={() => {
               (scrollTo(0, 0), setIsOpen(!isOpen));

@@ -66,7 +66,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-[82%]">
+      <div className="mx-6 max-w-[82%] md:mx-auto">
         <hr className="my-2 border-neutral-300" />
         <p className="text-sm leading-7 text-neutral-600">
           Copyright &copy; {new Date().getFullYear()} QFX Cinemas. All Right
