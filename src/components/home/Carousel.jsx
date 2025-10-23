@@ -22,7 +22,7 @@ const Carousel = () => {
       >
         <ChevronRight />
       </div>
-      <HomeCard movie={movies[film]} />
+      <HomeCard movies={movies} />
     </div>
   );
 };
