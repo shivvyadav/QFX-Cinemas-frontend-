@@ -50,7 +50,7 @@ const Payment = ({ setShowPayment, seats, totalAmount, showId }) => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
-      className="fixed top-[50%] left-[50%] z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col justify-between gap-6 rounded-xl border border-neutral-300 bg-neutral-50 p-8 shadow-lg md:w-[600px] md:flex-row md:p-8"
+      className="fixed top-[50%] left-[50%] z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col justify-between gap-6 rounded-xl border border-neutral-300 bg-neutral-50 p-6 shadow-lg w-[300px]  md:w-[600px] md:flex-row md:p-8"
     >
       {/* Seat info */}
       <div className="flex flex-col gap-2 md:gap-6">
@@ -74,9 +74,9 @@ const Payment = ({ setShowPayment, seats, totalAmount, showId }) => {
       </div>
 
       {/* Payment options */}
-      <div className="space-y-4 border-neutral-300 md:border-l md:pl-6">
-        <p className="text-center text-lg font-medium">Payment Mode</p>
-        <div className="flex gap-4">
+      <div className="space-y-4 border-neutral-300 md:border-l md:pl-6 mr-2">
+        <p className="md:text-center text-lg font-medium">Payment Mode</p>
+        <div className="flex  gap-4">
           <button
             onClick={handleKhaltiPayment}
             className="w-24 rounded-md border border-neutral-300 p-4 hover:border-neutral-500"
