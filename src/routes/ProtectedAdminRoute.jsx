@@ -14,6 +14,12 @@ const ProtectedAdminRoute = ({ children }) => {
   useEffect(() => {
     let cancelled = false;
 
+    // Redirect early when user is not signed in
+    if (isLoaded && !isSignedIn) {
+      setIsVerifying(false);
+      return;
+    }
+
     const verifyAdmin = async () => {
       if (!isLoaded || !isSignedIn) return;
 
@@ -22,27 +28,19 @@ const ProtectedAdminRoute = ({ children }) => {
         const token = await getToken();
         const res = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/admin/verify`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
+          { headers: { Authorization: `Bearer ${token}` } },
         );
 
         if (!cancelled && res.data?.success) {
           setIsAdmin(true);
-          if (!sessionStorage.getItem("adminWelcomed")) {
-            toast.success(res.data.message || "Welcome Admin!");
-            sessionStorage.setItem("adminWelcomed", "true");
-          }
         } else {
           setIsAdmin(false);
-          toast.error(res.data?.message || "Access denied: Admins only!");
+          toast.error(res.data?.message || "Admins only!");
         }
       } catch (err) {
         if (!cancelled) {
           setIsAdmin(false);
-          toast.error(
-            err?.response?.data?.message || "Access denied: Admins only!",
-          );
+          toast.error(err?.response?.data?.message || "Admins only!");
         }
       } finally {
         if (!cancelled) setIsVerifying(false);
@@ -56,7 +54,18 @@ const ProtectedAdminRoute = ({ children }) => {
     };
   }, [isLoaded, isSignedIn, getToken]);
 
-  if (isVerifying) {
+  // Prevent duplicate toast on redirect
+  const toastShown = React.useRef(false);
+
+  if (isLoaded && !isSignedIn) {
+    if (!toastShown.current) {
+      toast.error("You are not signed in");
+      toastShown.current = true;
+    }
+    return <Navigate to="/" replace />;
+  }
+
+  if (!isLoaded || isVerifying) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Loader z={50} />
@@ -64,7 +73,7 @@ const ProtectedAdminRoute = ({ children }) => {
     );
   }
 
-  if (!isSignedIn || !isAdmin) {
+  if (!isAdmin) {
     return <Navigate to="/" replace />;
   }
 
