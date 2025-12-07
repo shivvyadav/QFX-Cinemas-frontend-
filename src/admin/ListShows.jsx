@@ -1,28 +1,46 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { motion } from "motion/react";
+import axios from "axios";
 import Title from "./Title";
 import Loader from "../components/loader/Loader";
+import { useContext } from "react";
+import AppContext from "../context/AppContext";
 
 const ListShows = () => {
+  const { setSelectedShow } = useContext(AppContext); // ✅ from AppContext
+
   const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
+
     const fetchShows = async () => {
       try {
         const res = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/shows/summary`,
         );
-        if (res.data.success) setShows(res.data.shows);
+
+        if (mounted && res.data.success) {
+          setShows(res.data.shows);
+        }
       } catch (error) {
         console.error("Error fetching shows summary:", error);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
+
     fetchShows();
+    return () => {
+      mounted = false;
+    };
   }, []);
+
+  // Optional: highlight clicked row or use it to open detail page
+  const handleSelectShow = (show) => {
+    setSelectedShow(show); // ✅ stored in AppContext globally
+  };
 
   return (
     <motion.div
@@ -46,9 +64,14 @@ const ListShows = () => {
                 <th className="border px-3 py-2.5">Earnings</th>
               </tr>
             </thead>
+
             <tbody>
               {shows.map((show) => (
-                <tr key={show.id} className="hover:bg-neutral-50">
+                <tr
+                  key={show.id}
+                  onClick={() => handleSelectShow(show)}
+                  className="cursor-pointer transition hover:bg-neutral-100"
+                >
                   <td className="border border-neutral-200 px-3 py-2.5 text-sm font-medium text-neutral-800">
                     {show.title}
                   </td>
