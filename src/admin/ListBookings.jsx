@@ -44,7 +44,7 @@ const ListBookings = () => {
         <p className="mt-10 text-center text-gray-500">No bookings found.</p>
       ) : (
         <div className="mt-8 overflow-x-auto">
-          <table className="border-collapse overflow-hidden rounded-lg text-sm shadow min-w-5xl">
+          <table className="min-w-5xl border-collapse overflow-hidden rounded-lg text-sm shadow">
             <thead>
               <tr className="bg-teal-500 text-left text-white">
                 <th className="border px-3 py-2.5">User Name</th>
