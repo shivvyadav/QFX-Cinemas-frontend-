@@ -28,7 +28,9 @@ const Dashboard = () => {
   };
   const fetchSummary = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/admin/summary`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/admin/summary`,
+      );
       if (res.data.success) setSummary(res.data.summary);
     } catch (err) {
       console.error("Error fetching admin summary:", err);
