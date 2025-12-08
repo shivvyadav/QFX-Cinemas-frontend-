@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
 import Seat from "./Seat";
 import SeatInfo from "./SeatInfo";
 import { useNavigate, useParams } from "react-router-dom";
 import { ExtractGenre, FormatTime, TicketRate } from "../../lib/utils";
 import SeatBooked from "./SeatBooked";
+import AppContext from "../../context/AppContext";
 
-// 🧩 Helper functions
+//  Helper functions
 const getDayName = (dateStr) => {
   const d = new Date(dateStr + "T00:00:00");
   const dayIndex = d.getDay();
@@ -16,50 +16,59 @@ const getDayName = (dateStr) => {
 };
 
 const getShowPeriod = (timeStr) => {
-  // Expecting timeStr like "13:30" or "09:00"
   const [hour] = timeStr.split(":").map(Number);
   return hour < 12 ? "morning" : "afternoon";
 };
+
 const SeatLayout = () => {
   const { movie_id, date, time } = useParams();
   const navigate = useNavigate();
+
+  const { selectedShow, setSelectedShow, fetchShowDetail } =
+    useContext(AppContext);
 
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [occupiedSeats, setOccupiedSeats] = useState([]);
   const [movie, setMovie] = useState(null);
   const [rates, setRates] = useState({ sofa: 0, recliner: 0, solo: 0 });
 
+  //  Use AppContext value or fetch
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BASE_URL}/api/shows/${movie_id}`)
-      .then((response) => {
-        setMovie(response.data);
-        const occupied =
-          response.data?.occupiedSeats?.[date]?.[time] ||
-          response.data?.occupiedSeats?.[date] ||
-          response.data?.occupiedSeats ||
-          [];
-        setOccupiedSeats(Array.isArray(occupied) ? occupied : []);
-      })
-      .catch((error) => console.log(error));
-  }, [movie_id, date, time]);
+    if (selectedShow?._id === movie_id) {
+      setMovie(selectedShow);
+      const occupied =
+        selectedShow?.occupiedSeats?.[date]?.[time] ||
+        selectedShow?.occupiedSeats?.[date] ||
+        selectedShow?.occupiedSeats ||
+        [];
+      setOccupiedSeats(Array.isArray(occupied) ? occupied : []);
+    } else {
+      fetchShowDetail(movie_id).then(() => {
+        if (selectedShow?._id === movie_id) {
+          setMovie(selectedShow);
+          const occupied =
+            selectedShow?.occupiedSeats?.[date]?.[time] ||
+            selectedShow?.occupiedSeats?.[date] ||
+            selectedShow?.occupiedSeats ||
+            [];
+          setOccupiedSeats(Array.isArray(occupied) ? occupied : []);
+        }
+      });
+    }
+  }, [movie_id, date, time, selectedShow, fetchShowDetail]);
 
-  // update rates when date/time changes
+  // Update rates when date/time changes
   useEffect(() => {
     if (!date || !time) return;
     const currentDay = getDayName(date);
-    const period = getShowPeriod(time); // "morning" | "afternoon"
+    const period = getShowPeriod(time);
     const rateForDay = TicketRate().find((d) => d.day === currentDay);
     if (rateForDay) {
-      // prefer explicit keys like morningSofa / afternoonSofa etc.
       const sofa = rateForDay[`${period}Sofa`] ?? rateForDay[`sofa`] ?? 0;
       const recliner =
         rateForDay[`${period}Recliner`] ?? rateForDay[`recliner`] ?? 0;
       const solo =
-        rateForDay[`${period}Solo`] ??
-        Math.round((sofa + recliner) / 2) ?? // fall back to mean
-        200;
-
+        rateForDay[`${period}Solo`] ?? Math.round((sofa + recliner) / 2) ?? 200;
       setRates({ sofa, recliner, solo });
     } else {
       setRates({ sofa: 300, recliner: 225, solo: 250 });
@@ -67,13 +76,13 @@ const SeatLayout = () => {
     setSelectedSeats([]);
   }, [date, time]);
 
-  // If some selected seats become occupied, remove them from selection
+  // Remove occupied seats from selectedSeats
   useEffect(() => {
     if (!occupiedSeats || occupiedSeats.length === 0) return;
     setSelectedSeats((prev) => prev.filter((s) => !occupiedSeats.includes(s)));
   }, [occupiedSeats]);
 
-  // 🧠 Toggle seat select/unselect
+  // Toggle seat select/unselect
   const handleSeatSelect = (seatId) => {
     if (occupiedSeats.includes(seatId)) return;
     setSelectedSeats((prev) =>
@@ -83,7 +92,7 @@ const SeatLayout = () => {
     );
   };
 
-  // Calculate total amount
+  // Total amount calculation
   const totalAmount = useMemo(() => {
     return selectedSeats.reduce((acc, seatId) => {
       const row = String(seatId).charAt(0).toUpperCase();
@@ -95,7 +104,7 @@ const SeatLayout = () => {
     }, 0);
   }, [selectedSeats, rates]);
 
-  // Seat row helper
+  // Seat row renderer
   const renderRow = (rowLabel, leftCount, rightCount = 0) => (
     <div className="mb-4 flex w-full items-center justify-center gap-6 px-4">
       <h2 className="w-4 text-sm font-semibold text-neutral-800">{rowLabel}</h2>
@@ -135,15 +144,11 @@ const SeatLayout = () => {
   );
 
   if (!movie) return <div className="min-h-screen"></div>;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{
-        opacity: 1,
-        transition: {
-          duration: 0.2,
-        },
-      }}
+      animate={{ opacity: 1, transition: { duration: 0.2 } }}
       className="min-h-screen bg-white"
     >
       {/* navbar */}
@@ -178,16 +183,15 @@ const SeatLayout = () => {
 
         {/* seat layout */}
         <div className="mx-6 overflow-x-auto py-4 text-center md:mx-16 lg:mx-28 xl:mx-24">
-          {/* ⬇️ New inner wrapper ensures scrollable width */}
           <div className="inline-block min-w-[500px] sm:min-w-full">
-            {/* Sofa section */}
+            {/* Sofa */}
             <h2 className="py-4 text-sm font-medium text-neutral-800 md:text-lg">
               Sofa : Rs. {rates.sofa}
             </h2>
             {renderRow("A", 12)}
             {renderRow("B", 12)}
 
-            {/* Recliner section */}
+            {/* Recliner */}
             <h2 className="py-4 text-sm font-medium text-neutral-800 md:text-lg">
               Recliner : Rs. {rates.recliner}
             </h2>
@@ -195,7 +199,7 @@ const SeatLayout = () => {
               <React.Fragment key={row}>{renderRow(row, 7, 9)}</React.Fragment>
             ))}
 
-            {/* Last row */}
+            {/* Solo */}
             <h2 className="py-4 text-sm font-medium text-neutral-800 md:text-lg">
               Solo : Rs. {rates.solo}
             </h2>
