@@ -51,7 +51,7 @@ const MyBookings = () => {
         bookings.map((booking) => (
           <div
             key={booking._id}
-            className="mb-4 flex w-full justify-between rounded-lg border border-neutral-300 bg-neutral-50 shadow md:p-3 xl:h-48"
+            className="mb-4 flex h-40 w-full justify-between rounded-lg border border-neutral-300 bg-neutral-50 shadow md:h-auto md:p-3 xl:h-48"
           >
             <div className="flex gap-2 overflow-hidden xl:gap-4">
               <img
