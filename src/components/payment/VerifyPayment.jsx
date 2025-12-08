@@ -54,7 +54,8 @@ const VerifyPayment = () => {
           navigate("/myBookings");
           scrollTo(0, 0);
         } else {
-          toast.error(res.data.message || "Payment verification failed.");
+          toast.error(res.data.message || "Payment failed.");
+          navigate("/");
         }
       } catch (err) {
         console.error("Verification Error:", err.response?.data || err.message);
