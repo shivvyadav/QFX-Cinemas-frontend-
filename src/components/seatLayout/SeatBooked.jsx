@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Payment from "../payment/Payment";
-import { useUser, useClerk } from "@clerk/clerk-react"; // 👈 import Clerk hooks
+import { useUser, useClerk } from "@clerk/clerk-react";
 
 const SeatBooked = ({ movie, seats, totalAmount }) => {
   const [showPayment, setShowPayment] = useState(false);
   const { isSignedIn } = useUser();
-  const { openSignIn } = useClerk(); // 👈 allows programmatic sign-in popup
+  const { openSignIn } = useClerk();
 
   const handleProceed = () => {
     if (!isSignedIn) {
       openSignIn({
-        // optional redirect to same page after sign in
         redirectUrl: window.location.pathname,
       });
       return;
