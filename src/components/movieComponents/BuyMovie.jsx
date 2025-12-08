@@ -1,20 +1,24 @@
 import React, { useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import AppContext from "../../context/AppContext"; // ✅ import context
+import AppContext from "../../context/AppContext";
 import ShowTimes from "./ShowTimes";
 import Hero from "./Hero";
 import AboutMovie from "./AboutMovie";
 import { motion } from "motion/react";
+
 const BuyMovie = () => {
   const { id } = useParams();
-  const { selectedShow, fetchShowDetail } = useContext(AppContext);
+  const appContext = useContext(AppContext);
+
+  const selectedShow = appContext?.selectedShow;
+  const fetchShowDetail = appContext?.fetchShowDetail;
 
   useEffect(() => {
-    if (id) fetchShowDetail(id);
-  }, [id]);
+    if (id && fetchShowDetail) fetchShowDetail(id);
+  }, [id, fetchShowDetail]);
 
-  if (!selectedShow) {
-    return <div className="min-h-screen"></div>;
+  if (!appContext || !selectedShow) {
+    return <div className="min-h-screen" />;
   }
 
   return (
