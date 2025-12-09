@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import { useUser, useAuth } from "@clerk/clerk-react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import Loader from "../components/loader/Loader";
+import axios from "axios";
 
 const ProtectedAdminRoute = ({ children }) => {
   const { isLoaded, isSignedIn } = useUser();
   const { getToken } = useAuth();
   const [isVerifying, setIsVerifying] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const toastShown = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
 
-    // Redirect early when user is not signed in
     if (isLoaded && !isSignedIn) {
       setIsVerifying(false);
       return;
@@ -28,19 +28,31 @@ const ProtectedAdminRoute = ({ children }) => {
         const token = await getToken();
         const res = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/admin/verify`,
-          { headers: { Authorization: `Bearer ${token}` } },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
         );
 
         if (!cancelled && res.data?.success) {
           setIsAdmin(true);
+          if (!sessionStorage.getItem("adminWelcomed")) {
+            toast.success(res.data.message || "Welcome Admin!");
+            sessionStorage.setItem("adminWelcomed", "true");
+          }
         } else {
           setIsAdmin(false);
-          toast.error(res.data?.message || "Admins only!");
+          if (!toastShown.current) {
+            toast.error(res.data?.message || "Admins only!");
+            toastShown.current = true;
+          }
         }
       } catch (err) {
         if (!cancelled) {
           setIsAdmin(false);
-          toast.error(err?.response?.data?.message || "Admins only!");
+          if (!toastShown.current) {
+            toast.error(err?.response?.data?.message || "Admins only!");
+            toastShown.current = true;
+          }
         }
       } finally {
         if (!cancelled) setIsVerifying(false);
@@ -53,9 +65,6 @@ const ProtectedAdminRoute = ({ children }) => {
       cancelled = true;
     };
   }, [isLoaded, isSignedIn, getToken]);
-
-  // Prevent duplicate toast on redirect
-  const toastShown = React.useRef(false);
 
   if (isLoaded && !isSignedIn) {
     if (!toastShown.current) {
