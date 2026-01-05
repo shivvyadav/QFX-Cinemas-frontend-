@@ -72,7 +72,7 @@ export const ContextProvider = ({ children }) => {
   }, [left, right]);
 
   if (isLoading || movies.length === 0) {
-    return <Loader />;
+    return <Loader z="50" />;
   }
 
   return (
